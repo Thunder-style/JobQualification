@@ -1,122 +1,104 @@
 import React, { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import PersonalInfoCard from './PersonalInfoCard';
-import PositionComparison from './PositionComparison';
-import QualificationDetails from './QualificationDetails';
-import QualificationRingChart from './QualificationRingChart';
-import ProgressBars from './ProgressBars';
-import QualificationRadarChart from './QualificationRadarChart';
-import { mockEmployee, getPositionLevels, checkQualificationStatus } from '../data/employeeData';
+import { mockEmployee, positionStandards, getPositionLevels, checkQualificationStatus } from '../data/employeeData';
+
+const getPositionList = () => {
+  // 按原有分组，合并所有岗位
+  const technicalPositions = ['三级专责', '二级专责', '一级专责'];
+  const skillPositions = ['副值', '主值', '值班长', '500kV巡维中心站长'];
+  const managementPositions = ['部门副主任', '部门主任'];
+  return [
+    { group: '技术通道', positions: technicalPositions },
+    { group: '技能通道', positions: skillPositions },
+    { group: '管理通道', positions: managementPositions }
+  ];
+};
 
 const QualificationReport = () => {
-  const [activeTab, setActiveTab] = useState('report');
-  
-  const positionLevels = getPositionLevels(mockEmployee.currentPosition);
+  // 默认选中 mockEmployee.currentPosition
+  const [selected, setSelected] = useState(mockEmployee.currentPosition);
+  // 获取当前和下一级岗位
+  const positionLevels = getPositionLevels(selected);
   const currentStatus = checkQualificationStatus(mockEmployee, positionLevels.current);
   const nextStatus = positionLevels.next ? checkQualificationStatus(mockEmployee, positionLevels.next) : null;
 
-  // 处理环形图数据
-  const getRingChartData = (status) => {
-    const qualified = Object.values(status).filter(item => item.qualified === true).length;
-    const unqualified = Object.values(status).filter(item => item.qualified === false).length;
-    const pending = Object.values(status).filter(item => item.qualified === null).length;
-    
-    return { qualified, unqualified, pending };
-  };
-
-  // 处理进度条数据
-  const getProgressData = (status) => {
-    return Object.entries(status).map(([key, value]) => ({
-      name: getCategoryTitle(key),
-      status: value.qualified ? 'qualified' : value.qualified === false ? 'unqualified' : 'pending',
-      progress: value.qualified ? 100 : value.qualified === false ? 30 : 60,
-      description: `要求: ${value.required}`
-    }));
-  };
-
-  // 处理雷达图数据
-  const getRadarData = (current, target) => {
-    return {
-      current: {
-        education: current.education.qualified ? 100 : 60,
-        title: current.title.qualified ? 100 : 70,
-        performance: current.performance.qualified ? 100 : 80,
-        experience: current.experience.qualified ? 100 : 90,
-        skill: 85
-      },
-      target: {
-        education: 100,
-        title: 100,
-        performance: 100,
-        experience: 100,
-        skill: 100
-      }
-    };
-  };
-
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">岗位任职资格标准报告</h1>
-          <p className="text-gray-600">深圳供电局有限公司 - 个人任职资格分析报告</p>
+    <div className="min-h-screen w-full bg-[#eaf0ff] flex flex-col">
+      <div className="w-full max-w-7xl mx-auto py-10 flex gap-10">
+        {/* 左侧晋升通道图 */}
+        <div className="w-[400px] relative">
+          {/* 渐变通道背景 */}
+          <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">
+            <svg width="400" height="700" viewBox="0 0 400 700" fill="none" xmlns="http://www.w3.org/2000/svg" style={{position:'absolute',left:0,top:0}}>
+              <path d="M200 700C200 700 200 400 200 40C200 20 220 10 240 20C260 30 320 60 380 120" stroke="#b3d8ff" strokeWidth="30" opacity="0.3"/>
+              <path d="M200 700C200 700 200 400 200 40C200 20 180 10 160 20C140 30 80 60 20 120" stroke="#b3d8ff" strokeWidth="30" opacity="0.3"/>
+              <rect x="120" y="20" width="160" height="660" rx="80" fill="url(#grad)"/>
+              <defs>
+                <linearGradient id="grad" x1="200" y1="20" x2="200" y2="680" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#3b82f6"/>
+                  <stop offset="1" stopColor="#eaf0ff"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          {/* 岗位级别按钮分组 */}
+          <div className="flex flex-col items-center justify-center w-full h-full z-10 pt-10">
+            {getPositionList().map((group) => (
+              <div key={group.group} className="mb-8 w-full">
+                <div className="font-semibold text-blue-700 mb-2 text-center">{group.group}</div>
+                <ul>
+                  {group.positions.map((pos) => (
+                    <li
+                      key={pos}
+                      className={`relative w-40 h-12 flex items-center justify-center mx-auto my-2 rounded-full transition-all duration-200 cursor-pointer text-lg ${selected === pos ? 'bg-[#3b82f6] text-white shadow-lg scale-110' : 'bg-[#eaf0ff] text-[#3b82f6]'} `}
+                      onClick={() => setSelected(pos)}
+                    >
+                      {selected === pos && (
+                        <>
+                          <span className="absolute left-[-120px] top-1/2 -translate-y-1/2 px-3 py-1 bg-[#3beaf6] text-white rounded-full text-xs shadow">任职条件</span>
+                          <span className="absolute right-[-30px] top-1/2 -translate-y-1/2 text-lg">&lt;&lt;</span>
+                        </>
+                      )}
+                      <span>{pos}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
-
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="report">个人报告</TabsTrigger>
-            <TabsTrigger value="details">标准详情</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="report" className="space-y-6">
-            <PersonalInfoCard employee={mockEmployee} />
-            
-            {/* 可视化分析区域 */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <QualificationRingChart 
-                data={getRingChartData(currentStatus)} 
-                title="当前岗位达标情况"
-              />
-              {nextStatus && (
-                <QualificationRingChart 
-                  data={getRingChartData(nextStatus)} 
-                  title="下一级别岗位达标情况"
-                />
-              )}
+        {/* 右侧岗位任职资格详情 */}
+        <div className="flex-1 h-full flex flex-col justify-start items-start pt-10">
+          <div className="text-2xl font-bold text-[#3b82f6] mb-4">{selected} 任职资格</div>
+          <ul className="mb-6">
+            {currentStatus ? (
+              Object.entries(currentStatus).map(([key, value]) => (
+                <li key={key} className={`mb-3 text-lg flex items-center ${value.qualified ? 'text-gray-700' : 'text-red-600 font-bold'}`}>
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#3b82f6] mr-3"></span>
+                  <span>{getCategoryTitle(key)}：</span>
+                  <span className="ml-2">{value.actual} <span className="ml-2 text-gray-500">（要求：{value.required}）</span></span>
+                </li>
+              ))
+            ) : <li className="text-gray-500">暂无数据</li>}
+          </ul>
+          {/* 下一级别岗位任职资格及未达标项 */}
+          {positionLevels.next && (
+            <div className="mt-6">
+              <div className="text-xl font-semibold text-blue-700 mb-2">晋升到「{positionLevels.next}」需满足：</div>
+              <ul>
+                {Object.entries(checkQualificationStatus(mockEmployee, positionLevels.next)).map(([key, value]) => (
+                  <li key={key} className={`mb-3 text-lg flex items-center ${value.qualified ? 'text-gray-700' : 'text-red-600 font-bold'}`}>
+                    <span className="inline-block w-2 h-2 rounded-full bg-[#3b82f6] mr-3"></span>
+                    <span>{getCategoryTitle(key)}：</span>
+                    <span className="ml-2">{value.actual} <span className="ml-2 text-gray-500">（要求：{value.required}）</span></span>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <ProgressBars 
-                items={getProgressData(currentStatus)}
-                title="当前岗位详细进度"
-              />
-              {nextStatus && (
-                <ProgressBars 
-                  items={getProgressData(nextStatus)}
-                  title="下一级别岗位详细进度"
-                />
-              )}
-            </div>
-
-            {nextStatus && (
-              <QualificationRadarChart 
-                currentData={getRadarData(currentStatus, nextStatus).current}
-                targetData={getRadarData(currentStatus, nextStatus).target}
-                title="能力差距分析"
-              />
-            )}
-
-            <PositionComparison 
-              employee={mockEmployee}
-              currentPosition={positionLevels.current}
-              nextPosition={positionLevels.next}
-            />
-          </TabsContent>
-          
-          <TabsContent value="details">
-            <QualificationDetails />
-          </TabsContent>
-        </Tabs>
+          )}
+          {!positionLevels.next && (
+            <div className="text-gray-500 mt-6">已是最高级别岗位</div>
+          )}
+        </div>
       </div>
     </div>
   );
