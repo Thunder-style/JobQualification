@@ -3,6 +3,7 @@ export const mockEmployee = {
   id: '001',
   name: '张三',
   currentPosition: '二级专责',
+  department: '变电管理一所/安全监管部',
   education: '本科',
   title: '中级工程师',
   skillLevel: '高级作业员',
@@ -38,7 +39,7 @@ export const positionStandards = {
     performance: '近一年季度A至少1次',
     workYears: 1
   },
-  '500kV巡维中心站长': {
+  '巡维站长': {
     education: '本科',
     title: '高级技师',
     experience: '在副职（或同等层级）岗位工作满1年，近一年季度A至少1次',
@@ -85,7 +86,7 @@ export const positionStandards = {
 // 获取当前岗位和下一级别岗位
 export const getPositionLevels = (currentPosition) => {
   const technicalPositions = ['三级专责', '二级专责', '一级专责'];
-  const skillPositions = ['副值', '主值', '值班长', '500kV巡维中心站长'];
+  const skillPositions = ['副值', '主值', '值班长', '巡维站长'];
   const managementPositions = ['部门副主任', '部门主任'];
   
   let positions = [];
