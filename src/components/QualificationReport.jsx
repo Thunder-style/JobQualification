@@ -48,7 +48,7 @@ const QualificationReport = () => {
       <div className={`min-h-screen w-full bg-gradient-to-b from-blue-50 to-indigo-50 flex flex-col transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
       {/* 员工信息卡片 */}
         <div className="w-full max-w-7xl mx-auto pt-8 px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 flex-1 min-w-[280px] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-l-4 border-blue-500">
             <div className="flex items-center mb-2">
               <svg className="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -66,6 +66,15 @@ const QualificationReport = () => {
               <div className="text-sm font-medium text-gray-500">当前岗位</div>
             </div>
             <div className="text-2xl font-bold text-gray-800">{mockEmployee.currentPosition}</div>
+          </div>
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 flex-1 min-w-[280px] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-l-4 border-yellow-500">
+            <div className="flex items-center mb-2">
+              <svg className="w-5 h-5 text-yellow-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <div className="text-sm font-medium text-gray-500">当前岗级</div>
+            </div>
+            <div className="text-2xl font-bold text-gray-800">19级</div>
           </div>
           <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 flex-1 min-w-[280px] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-l-4 border-purple-500">
             <div className="flex items-center mb-2">
@@ -164,29 +173,76 @@ const QualificationReport = () => {
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mr-2 sm:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
-                  <div className="text-lg sm:text-xl font-bold text-blue-700">当前任职资格</div>
+                  <div className="text-lg sm:text-xl font-bold text-blue-700">个人成绩</div>
                 </div>
                 <div className="bg-white rounded-lg border border-blue-100 p-4 shadow-inner">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="bg-blue-50 rounded-lg p-3 text-gray-700 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                      <div className="text-sm text-blue-700 font-medium mb-1">岗位系列</div>
-                      <div className="font-medium">二级专责</div>
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-4">
+                      <div className="bg-blue-50 rounded-lg p-3 text-gray-700 shadow-sm border border-blue-100 transition-all hover:shadow-md hover:-translate-y-0.5 flex flex-col">
+                        <div className="text-sm text-blue-700 font-medium mb-2">学历</div>
+                        <div className="font-medium text-center mt-auto">本科</div>
+                      </div>
+                      <div className="bg-blue-50 rounded-lg p-3 text-gray-700 shadow-sm border border-blue-100 transition-all hover:shadow-md hover:-translate-y-0.5 flex flex-col">
+                        <div className="text-sm text-blue-700 font-medium mb-2">职称</div>
+                        <div className="font-medium text-center mt-auto">中级</div>
+                      </div>
+                      <div className="bg-blue-50 rounded-lg p-3 text-gray-700 shadow-sm border border-blue-100 transition-all hover:shadow-md hover:-translate-y-0.5 flex flex-col">
+                        <div className="text-sm text-blue-700 font-medium mb-2">技能等级</div>
+                        <div className="font-medium text-center mt-auto">无</div>
+                      </div>
+                      <div className="bg-blue-50 rounded-lg p-3 text-gray-700 shadow-sm border border-blue-100 transition-all hover:shadow-md hover:-translate-y-0.5 flex flex-col">
+                        <div className="text-sm text-blue-700 font-medium mb-2">本岗级工作时长</div>
+                        <div className="font-medium text-center mt-auto">2年</div>
+                      </div>
                     </div>
-                    <div className="bg-blue-50 rounded-lg p-3 text-gray-700 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                      <div className="text-sm text-blue-700 font-medium mb-1">学历</div>
-                      <div className="font-medium">本科</div>
+                    <div className="grid grid-cols-1 gap-3 mb-4">
+                      <div className="bg-blue-50 rounded-lg p-4 text-gray-700 shadow-sm border border-blue-100 transition-all hover:shadow-md hover:-translate-y-0.5">
+                        <div className="text-sm text-blue-700 font-medium mb-2">近三年所获荣誉（包括劳动竞赛和奖励）</div>
+                        <div className="font-medium text-center">无</div>
+                      </div>
                     </div>
-                    <div className="bg-blue-50 rounded-lg p-3 text-gray-700 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                      <div className="text-sm text-blue-700 font-medium mb-1">职称要求</div>
-                      <div className="font-medium">中级</div>
+                    
+                  {/* 绩效结果区域 - 同一行显示 */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* 近三年年度绩效结果 */}
+                    <div className="bg-green-50 rounded-lg p-2 border border-green-100 transition-all hover:shadow-md hover:-translate-y-0.5">
+                      <div className="text-sm font-semibold text-green-700 mb-2 text-center">近三年年度绩效结果</div>
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className="bg-white rounded p-1.5 text-center shadow-sm border border-green-50">
+                          <div className="text-xs text-gray-600 mb-0.5">2022年</div>
+                          <div className="text-base font-bold text-blue-600">B+</div>
+                        </div>
+                        <div className="bg-white rounded p-1.5 text-center shadow-sm border border-green-50">
+                          <div className="text-xs text-gray-600 mb-0.5">2023年</div>
+                          <div className="text-base font-bold text-blue-600">B+</div>
+                        </div>
+                        <div className="bg-white rounded p-1.5 text-center shadow-sm border border-green-50">
+                          <div className="text-xs text-gray-600 mb-0.5">2024年</div>
+                          <div className="text-base font-bold text-green-600">A</div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="bg-blue-50 rounded-lg p-3 text-gray-700 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                      <div className="text-sm text-blue-700 font-medium mb-1">胜任等级</div>
-                      <div className="font-medium">无</div>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-3 text-gray-700 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 sm:col-span-2">
-                      <div className="text-sm text-blue-700 font-medium mb-1">工作业绩</div>
-                      <div className="font-medium">近一年季度A，2次</div>
+                    
+                    {/* 近一年季度绩效结果 */}
+                    <div className="bg-purple-50 rounded-lg p-2 border border-purple-100 transition-all hover:shadow-md hover:-translate-y-0.5">
+                      <div className="text-sm font-semibold text-purple-700 mb-2 text-center">近一年季度绩效结果</div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div className="bg-white rounded p-1.5 text-center shadow-sm border border-purple-50">
+                          <div className="text-xs text-gray-600 mb-0.5">一季度</div>
+                          <div className="text-base font-bold text-blue-600">B+</div>
+                        </div>
+                        <div className="bg-white rounded p-1.5 text-center shadow-sm border border-purple-50">
+                          <div className="text-xs text-gray-600 mb-0.5">二季度</div>
+                          <div className="text-base font-bold text-blue-500">B</div>
+                        </div>
+                        <div className="bg-white rounded p-1.5 text-center shadow-sm border border-purple-50">
+                          <div className="text-xs text-gray-600 mb-0.5">三季度</div>
+                          <div className="text-base font-bold text-green-600">A</div>
+                        </div>
+                        <div className="bg-white rounded p-1.5 text-center shadow-sm border border-purple-50">
+                          <div className="text-xs text-gray-600 mb-0.5">四季度</div>
+                          <div className="text-base font-bold text-blue-600">B+</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
